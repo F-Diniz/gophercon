@@ -13,5 +13,5 @@ func main() {
 	log.Printf("Service is starting...")
 
 	r := routing.BaseRouter()
-	http.ListenAndServe(":8000", r)
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
