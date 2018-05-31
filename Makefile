@@ -12,9 +12,8 @@ CONTAINER_IMAGE?=docker.io/fdinizdocker/${APP}
 GOOS?=linux
 GOARCH?=amd64
 
-
 clean:
-	rm -f ./bin/${APP}
+	rm -f ./bin/${GOOS}-${GOARCH}/${APP}
 
 build: clean
 	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} \
@@ -22,7 +21,7 @@ build: clean
 	-ldflags "-s -w -X ${PROJECT}/version.Release=${RELEASE} \
 		-X ${PROJECT}/version.Commit=${COMMIT} \
 		-X ${PROJECT}/version.BuildTime=${BUILD_TIME}" \
-		-o ./bin/${APP} ${PROJECT}/cmd/gophercon 
+		-o ./bin/${GOOS}-${GOARCH}/${APP} ${PROJECT}/cmd
 
 container: build
 	docker build -t $(CONTAINER_IMAGE):$(RELEASE) .
@@ -40,4 +39,4 @@ push: build
 	docker push $(CONTAINER_IMAGE):$(RELEASE)
 
 deploy: push
-	helm upgrade ${CONTAINER_NAME} -f charts/${VALUES}.yaml charts --kube-context ${KUBE_CONTEXT} --namesp
+	helm upgrade ${CONTAINER_NAME} -f charts/${VALUES}.yaml charts --kube-context ${KUBE_CONTEXT} --namespace ${NAMESPACE} --version=${RELEASE} -i --wait
