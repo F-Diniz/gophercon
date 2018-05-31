@@ -1,10 +1,11 @@
 package routing_test
 
 import (
-	"testing"
-	"github.com/F-Diniz/gophercon/pkg/routing"
-	"net/http/httptest"
 	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/F-Diniz/gophercon/pkg/routing"
 )
 
 func TestBaseRouter(t *testing.T) {

@@ -2,10 +2,10 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"os"
 
 	"github.com/F-Diniz/gophercon/pkg/routing"
-	"os"
+	"github.com/F-Diniz/gophercon/webserver"
 )
 
 // go run ./cmd/gophercon/gophercon.go
@@ -20,5 +20,7 @@ func main() {
 	}
 
 	r := routing.BaseRouter()
-	log.Fatal(http.ListenAndServe(":" + port, r))
+	ws := webserver.New("", port, r)
+
+	log.Fatal(ws.Start())
 }
