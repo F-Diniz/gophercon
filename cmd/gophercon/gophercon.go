@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/F-Diniz/gophercon/pkg/routing"
+	"os"
 )
 
 // go run ./cmd/gophercon/gophercon.go
@@ -12,6 +13,12 @@ import (
 func main() {
 	log.Printf("Service is starting...")
 
+	port := os.Getenv("SERVICE_PORT")
+
+	if len(port) == 0 {
+		log.Fatal("Service port wasn't set")
+	}
+
 	r := routing.BaseRouter()
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":" + port, r))
 }
